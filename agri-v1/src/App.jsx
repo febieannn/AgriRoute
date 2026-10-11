@@ -492,6 +492,9 @@ export default function App() {
             gap: 8px;
           }
 
+           .ar-header .ar-logo {
+            display: none;
+        }
 
           .ar-nav {
             width: 100%;
