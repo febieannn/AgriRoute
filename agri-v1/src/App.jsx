@@ -4,6 +4,11 @@ import HarvestLog from "./harvest.jsx";
 export default function App() {
   const [page, setPage] = useState("Home");
 
+  // CHANGE THESE TO YOUR REAL CONTACT DETAILS
+  const facebookUrl = "https://www.facebook.com/YOUR_PAGE";
+  const emailAddress = "your-email@gmail.com";
+  const phoneNumber = "+639171234567";
+
   function navigateTo(name) {
     setPage(name);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -25,7 +30,7 @@ export default function App() {
         button { cursor: pointer; }
 
         .ar-header {
-          height: 82px;
+          min-height: 82px;
           padding: 0 6%;
           display: flex;
           justify-content: space-between;
@@ -38,33 +43,26 @@ export default function App() {
           z-index: 50;
         }
 
-       
-.ar-logo {
-  display: flex;
-  align-items: center;
-  padding: 0;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-}
+        .ar-logo {
+          display: flex;
+          align-items: center;
+          padding: 0;
+          border: none;
+          background: transparent;
+        }
 
-.ar-logo-image {
-  display: block;
-  width: 270px;
-  max-width: 100%;
-  height: 65px;
-  object-fit: contain;
-  object-position: left center;
-}
+        .ar-logo-image {
+          display: block;
+          width: 270px;
+          max-width: 100%;
+          height: 65px;
+          object-fit: contain;
+          object-position: left center;
+        }
 
-@media (max-width: 520px) {
-  .ar-logo-image {
-    width: 190px;
-    height: 48px;
-  }
-}
         .ar-nav {
           height: 100%;
+          min-height: 82px;
           display: flex;
           align-items: center;
           gap: clamp(12px, 3vw, 42px);
@@ -73,6 +71,7 @@ export default function App() {
         .ar-nav button {
           position: relative;
           height: 100%;
+          min-height: 82px;
           padding: 0 3px;
           border: 0;
           background: transparent;
@@ -128,34 +127,20 @@ export default function App() {
           z-index: 1;
         }
 
-       
-.ar-big-logo {
-  display: flex;
-  align-items: center;
-  margin-bottom: 24px;
-}
-
-.ar-hero-logo {
-  display: block;
-  width: 560px;
-  max-width: 100%;
-  height: auto;
-  object-fit: contain;
-  object-position: left center;
-}
-
-@media (max-width: 600px) {
-  .ar-hero-logo {
-    width: 100%;
-    max-width: 360px;
-  }
-}
-
-        .ar-big-logo .leaf-mark {
-          font-size: clamp(48px, 7vw, 80px);
+        .ar-big-logo {
+          display: flex;
+          align-items: center;
+          margin-bottom: 24px;
         }
 
-        .ar-big-logo .route-word { color: #087b80; }
+        .ar-hero-logo {
+          display: block;
+          width: 560px;
+          max-width: 100%;
+          height: auto;
+          object-fit: contain;
+          object-position: left center;
+        }
 
         .ar-hero-content h1 {
           max-width: 620px;
@@ -184,6 +169,7 @@ export default function App() {
           background: linear-gradient(100deg, #2e9c4a, #14763a);
           color: white;
           font-weight: 700;
+          text-decoration: none;
           box-shadow: 0 7px 16px #176b3525;
           transition: transform .2s, box-shadow .2s;
         }
@@ -325,14 +311,7 @@ export default function App() {
           color: #b9dda1;
         }
 
-        .ar-footer {
-          padding: 20px;
-          background: #16442c;
-          color: #dcebd9;
-          text-align: center;
-          font-size: 12px;
-        }
-
+        /* GENERAL PAGES */
         .ar-simple-page {
           min-height: 65vh;
           padding: 70px 20px;
@@ -340,7 +319,150 @@ export default function App() {
         }
 
         .ar-simple-page h1 { color: #17643b; }
-        .ar-simple-page p { color: #5d7263; }
+        .ar-simple-page p {
+          color: #5d7263;
+          line-height: 1.8;
+        }
+
+        /* CONTACT US PAGE */
+        .ar-contact-page {
+          min-height: 75vh;
+          padding: 65px 7% 80px;
+          text-align: center;
+          background:
+            radial-gradient(ellipse at top right, #d9edc9, transparent 45%),
+            #f6faf3;
+        }
+
+        .ar-contact-label {
+          display: inline-block;
+          padding: 8px 16px;
+          margin-bottom: 14px;
+          border-radius: 30px;
+          background: #e2f2d9;
+          color: #26743e;
+          font-size: 13px;
+          font-weight: 700;
+        }
+
+        .ar-contact-page h1 {
+          margin: 0 0 14px;
+          color: #145b3c;
+          font-size: clamp(32px, 5vw, 46px);
+        }
+
+        .ar-contact-intro {
+          max-width: 600px;
+          margin: 0 auto;
+          color: #587061;
+          font-size: 16px;
+          line-height: 1.8;
+        }
+
+        .ar-contact-cards {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 24px;
+          max-width: 1050px;
+          margin: 45px auto 0;
+          text-align: center;
+        }
+
+        .ar-contact-card {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 30px 22px;
+          border: 1px solid #e0eadb;
+          border-radius: 20px;
+          background: #ffffff;
+          box-shadow: 0 10px 30px #173d250b;
+          transition: transform .2s, box-shadow .2s;
+        }
+
+        .ar-contact-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 15px 35px #173d2518;
+        }
+
+        .ar-contact-icon {
+          display: grid;
+          place-items: center;
+          width: 76px;
+          height: 76px;
+          margin-bottom: 18px;
+          border-radius: 22px;
+          font-size: 35px;
+        }
+
+        .ar-contact-icon.facebook {
+          background: #e8efff;
+        }
+
+        .ar-contact-icon.gmail {
+          background: #fff0eb;
+        }
+
+        .ar-contact-icon.phone {
+          background: #e4f5e4;
+        }
+
+        .ar-contact-card h2 {
+          margin: 0 0 10px;
+          color: #205737;
+          font-size: 22px;
+        }
+
+        .ar-contact-card p {
+          min-height: 48px;
+          margin: 0 0 20px;
+          overflow-wrap: anywhere;
+          color: #687d6d;
+          font-size: 14px;
+          line-height: 1.7;
+        }
+
+        .ar-contact-link {
+          display: inline-flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          min-height: 46px;
+          margin-top: auto;
+          padding: 12px 16px;
+          border: none;
+          border-radius: 30px;
+          color: white;
+          font-size: 14px;
+          font-weight: 700;
+          text-decoration: none;
+          transition: filter .2s;
+        }
+
+        .ar-contact-link:hover { filter: brightness(.92); }
+
+        .ar-contact-link.facebook { background: #1877f2; }
+        .ar-contact-link.gmail { background: #d94b3d; }
+        .ar-contact-link.phone { background: #238342; }
+
+        .ar-contact-note {
+          max-width: 650px;
+          margin: 35px auto 0;
+          padding: 18px;
+          border-radius: 12px;
+          background: #eaf4e4;
+          color: #42644a;
+          font-size: 14px;
+          line-height: 1.8;
+        }
+
+        .ar-footer {
+          padding: 20px;
+          background: #16442c;
+          color: #dcebd9;
+          text-align: center;
+          font-size: 12px;
+        }
 
         @media (max-width: 800px) {
           .ar-home-hero {
@@ -354,50 +476,83 @@ export default function App() {
           }
 
           .ar-features { grid-template-columns: repeat(2, 1fr); }
+
+          .ar-contact-cards {
+            grid-template-columns: 1fr;
+            max-width: 430px;
+          }
+
+          .ar-contact-card p { min-height: auto; }
         }
 
         @media (max-width: 520px) {
           .ar-header {
-            height: auto;
-            min-height: 72px;
-            padding: 12px 15px;
+            padding: 10px 15px;
             flex-wrap: wrap;
             gap: 8px;
           }
 
-          .ar-logo { font-size: 24px; }
-          .ar-logo-mark { font-size: 28px; }
 
           .ar-nav {
             width: 100%;
+            min-height: 42px;
             height: 42px;
             justify-content: space-between;
             gap: 8px;
           }
 
-          .ar-nav button { font-size: 12px; }
+          .ar-nav button {
+            min-height: 42px;
+            font-size: 12px;
+          }
+
           .ar-nav button.active::after { bottom: 0; }
 
-          .ar-big-logo { font-size: 35px; }
-          .ar-big-logo .leaf-mark { font-size: 48px; }
+          .ar-hero-logo {
+            width: 100%;
+            max-width: 360px;
+          }
+
           .ar-hero-content > p { font-size: 15px; }
-          .ar-hero-preview { padding: 14px; border-width: 4px; }
-          .ar-features { gap: 8px; padding: 28px 10px; }
+
+          .ar-hero-preview {
+            padding: 14px;
+            border-width: 4px;
+          }
+
+          .ar-features {
+            gap: 8px;
+            padding: 28px 10px;
+          }
+
           .ar-feature h3 { font-size: 16px; }
           .ar-feature p { font-size: 13px; }
           .ar-feature-icon { width: 58px; height: 58px; }
+
+          .ar-preview-row {
+            grid-template-columns: 1fr;
+            gap: 5px;
+          }
+
+          .ar-contact-page { padding: 45px 18px 55px; }
+          .ar-contact-cards { gap: 16px; }
+          .ar-contact-card { padding: 25px 20px; }
         }
       `}</style>
 
+      {/* NAVIGATION BAR */}
       <header className="ar-header">
-       
-<button className="ar-logo" onClick={() => navigateTo("Home")}>
-  <img
-    src="/agriroute-logo.png"
-    alt="AgriRoute Logo"
-    className="ar-logo-image"
-  />
-</button>
+        <button
+          className="ar-logo"
+          onClick={() => navigateTo("Home")}
+          aria-label="Go to Home"
+        >
+          <img
+            src="/agriroute-logo.png"
+            alt="AgriRoute Logo"
+            className="ar-logo-image"
+          />
+        </button>
 
         <nav className="ar-nav" aria-label="Main navigation">
           {["Home", "Harvest Log", "About", "Contact"].map((item) => (
@@ -412,18 +567,18 @@ export default function App() {
         </nav>
       </header>
 
+      {/* HOME PAGE */}
       {page === "Home" && (
         <main>
-        
-<section className="ar-home-hero">
-  <div className="ar-hero-content">
-    <div className="ar-big-logo">
-      <img
-        src="/agriroute-logo.png"
-        alt="AgriRoute Logo"
-        className="ar-hero-logo"
-      />
-    </div>
+          <section className="ar-home-hero">
+            <div className="ar-hero-content">
+              <div className="ar-big-logo">
+                <img
+                  src="/agriroute-logo.png"
+                  alt="AgriRoute Logo"
+                  className="ar-hero-logo"
+                />
+              </div>
 
               <h1>Smarter Harvests. Stronger Communities.</h1>
 
@@ -437,7 +592,7 @@ export default function App() {
                 className="ar-primary-btn"
                 onClick={() => navigateTo("Harvest Log")}
               >
-               Go to Harvest Log <span>→</span>
+                Go to Harvest Log <span>→</span>
               </button>
             </div>
 
@@ -463,7 +618,7 @@ export default function App() {
               </div>
 
               <h3 className="ar-preview-title">
-                Current Harvests & Shipment Status
+                Current Harvests &amp; Shipment Status
               </h3>
 
               <div className="ar-preview-row">
@@ -475,8 +630,10 @@ export default function App() {
               <div className="ar-preview-row">
                 <strong>Maria Cruz</strong>
                 <span>Rice · 2,100 kg</span>
-                <span className="ar-preview-status"
-                  style={{ background: "#fff0bd", color: "#775700" }}>
+                <span
+                  className="ar-preview-status"
+                  style={{ background: "#fff0bd", color: "#775700" }}
+                >
                   On the Way
                 </span>
               </div>
@@ -524,14 +681,20 @@ export default function App() {
           </section>
 
           <section className="ar-closing">
-            <p>Together for a more productive<br />and sustainable future.</p>
+            <p>
+              Together for a more productive
+              <br />
+              and sustainable future.
+            </p>
             <small>🌱 ─────────── 🌱</small>
           </section>
         </main>
       )}
 
+      {/* HARVEST LOG PAGE */}
       {page === "Harvest Log" && <HarvestLog />}
 
+      {/* ABOUT PAGE */}
       {page === "About" && (
         <main className="ar-simple-page">
           <h1>About AgriRoute</h1>
@@ -539,6 +702,7 @@ export default function App() {
             AgriRoute helps farming cooperatives record harvests,
             monitor deliveries, and organize their agricultural records.
           </p>
+
           <button
             className="ar-primary-btn"
             onClick={() => navigateTo("Harvest Log")}
@@ -548,22 +712,98 @@ export default function App() {
         </main>
       )}
 
+      {/* CONTACT PAGE */}
       {page === "Contact" && (
-        <main className="ar-simple-page">
-          <h1>Contact AgriRoute</h1>
-          <p>
-            Contact your cooperative administrator for help with
-            harvest records and delivery coordination.
+        <main className="ar-contact-page">
+          <span className="ar-contact-label">WE'RE HERE TO HELP</span>
+
+          <h1>Contact Us</h1>
+
+          <p className="ar-contact-intro">
+            Have questions about AgriRoute, harvest records, or delivery
+            coordination? Get in touch with us using any of the options below.
           </p>
+
+          <section className="ar-contact-cards">
+            {/* FACEBOOK */}
+            <article className="ar-contact-card">
+              <div className="ar-contact-icon facebook">📘</div>
+
+              <h2>Facebook</h2>
+
+              <p>
+                Visit our Facebook page to connect with our team and send
+                us a message.
+              </p>
+
+              <a
+                className="ar-contact-link facebook"
+                href={facebookUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Visit Facebook →
+              </a>
+            </article>
+
+            {/* GMAIL */}
+            <article className="ar-contact-card">
+              <div className="ar-contact-icon gmail">✉️</div>
+
+              <h2>Gmail</h2>
+
+              <p>
+                Send us an email for questions, feedback, or assistance.
+              </p>
+
+              <a
+                className="ar-contact-link gmail"
+                href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(emailAddress)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Email Us →
+              </a>
+            </article>
+
+            {/* PHONE */}
+            <article className="ar-contact-card">
+              <div className="ar-contact-icon phone">📞</div>
+
+              <h2>Phone</h2>
+
+              <p>
+                Call us directly if you need assistance with your harvest
+                records or deliveries.
+              </p>
+
+              <a
+                className="ar-contact-link phone"
+                href={`tel:${phoneNumber.replace(/[^\d+]/g, "")}`}
+              >
+                Call Us →
+              </a>
+            </article>
+          </section>
+
+          <div className="ar-contact-note">
+            <strong>AgriRoute Support 🌱</strong>
+            <br />
+            We're committed to helping farmers keep their harvest records
+            organized and their deliveries on track.
+          </div>
+
           <button
             className="ar-primary-btn"
-            onClick={() => navigateTo("Harvest Log")}
+            style={{ marginTop: 30 }}
+            onClick={() => navigateTo("Home")}
           >
-            Open Harvest Log →
+            ← Back to Home
           </button>
         </main>
       )}
 
+      {/* FOOTER */}
       <footer className="ar-footer">
         © {new Date().getFullYear()} AgriRoute · Local Cooperative Harvest Log
       </footer>

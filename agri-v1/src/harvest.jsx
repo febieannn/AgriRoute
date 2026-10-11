@@ -7,6 +7,8 @@ const sampleRecords = [
   {
     id: 1,
     farmer: "Jose Mercado",
+    phone: "09171234567",
+    email: "jose@example.com",
     crop: "Tomatoes",
     quantity: 500,
     buyer: "SM Market",
@@ -16,6 +18,8 @@ const sampleRecords = [
   {
     id: 2,
     farmer: "Maria Cruz",
+    phone: "09181234567",
+    email: "maria@example.com",
     crop: "Rice",
     quantity: 2100,
     buyer: "Puregold",
@@ -25,6 +29,8 @@ const sampleRecords = [
   {
     id: 3,
     farmer: "Maria Cruz",
+    phone: "09181234567",
+    email: "maria@example.com",
     crop: "Corn",
     quantity: 2000,
     buyer: "Puregold",
@@ -34,6 +40,8 @@ const sampleRecords = [
   {
     id: 4,
     farmer: "Jose Cruz",
+    phone: "09191234567",
+    email: "josecruz@example.com",
     crop: "Tomatoes",
     quantity: 2100,
     buyer: "Puregold",
@@ -44,6 +52,8 @@ const sampleRecords = [
 
 const emptyForm = {
   farmer: "",
+  phone: "",
+  email: "",
   crop: "Tomatoes",
   quantity: "",
   buyer: ""
@@ -57,6 +67,7 @@ function loadRecords() {
 
     if (saved !== null) {
       const parsed = JSON.parse(saved);
+
       return Array.isArray(parsed) ? parsed : sampleRecords;
     }
   } catch (error) {
@@ -101,9 +112,30 @@ export default function HarvestLog() {
     event.preventDefault();
 
     const quantity = Number(form.quantity);
+    const phone = form.phone.trim();
+    const email = form.email.trim();
 
-    if (!form.farmer.trim() || !form.buyer.trim()) {
-      setNotice("Please enter the farmer and buyer names.");
+    if (
+      !form.farmer.trim() ||
+      !phone ||
+      !form.buyer.trim()
+    ) {
+      setNotice(
+        "Please enter the farmer name, contact number, and buyer."
+      );
+      return;
+    }
+
+    if (!/^[0-9+\-\s()]{7,20}$/.test(phone)) {
+      setNotice("Please enter a valid contact number.");
+      return;
+    }
+
+    if (
+      email &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+    ) {
+      setNotice("Please enter a valid email address.");
       return;
     }
 
@@ -115,6 +147,8 @@ export default function HarvestLog() {
     const newRecord = {
       id: Date.now(),
       farmer: form.farmer.trim(),
+      phone,
+      email,
       crop: form.crop,
       quantity,
       buyer: form.buyer.trim(),
@@ -130,7 +164,7 @@ export default function HarvestLog() {
     setForm(emptyForm);
     setFilter("All");
     setSearch("");
-    setNotice("Harvest batch added successfully.");
+    setNotice("Harvest batch and farmer contact added successfully.");
   }
 
   function changeStatus(id, status) {
@@ -139,7 +173,7 @@ export default function HarvestLog() {
     );
 
     saveRecords(updated);
-    setNotice("Shipment status updated.");
+    setNotice("Shipment status updated successfully.");
   }
 
   function deleteHarvest(id) {
@@ -191,11 +225,13 @@ export default function HarvestLog() {
     return records.filter((record) => {
       const matchesSearch = [
         record.farmer,
+        record.phone,
+        record.email,
         record.crop,
         record.buyer,
         record.status
       ].some((value) =>
-        String(value).toLowerCase().includes(term)
+        String(value ?? "").toLowerCase().includes(term)
       );
 
       const matchesFilter =
@@ -208,6 +244,8 @@ export default function HarvestLog() {
   function downloadCSV() {
     const columns = [
       "Farmer Name",
+      "Contact Number",
+      "Email Address",
       "Crop Type",
       "Quantity (kg)",
       "Buyer",
@@ -217,6 +255,8 @@ export default function HarvestLog() {
 
     const rows = records.map((r) => [
       r.farmer,
+      r.phone || "",
+      r.email || "",
       r.crop,
       r.quantity,
       r.buyer,
@@ -254,6 +294,8 @@ export default function HarvestLog() {
     ? [
         "AgriRoute Harvest Summary",
         `Farmer: ${qrRecord.farmer}`,
+        `Contact Number: ${qrRecord.phone || "Not provided"}`,
+        `Email: ${qrRecord.email || "Not provided"}`,
         `Crop: ${qrRecord.crop}`,
         `Quantity: ${qrRecord.quantity} kg`,
         `Buyer: ${qrRecord.buyer}`,
@@ -270,13 +312,17 @@ export default function HarvestLog() {
     <>
       <style>{`
         .hl-page {
-          max-width: 1450px;
+          max-width: 1500px;
           margin: 0 auto;
           padding: 35px clamp(14px, 4vw, 48px) 55px;
           color: #1d392a;
           background: #f5f8f3;
           min-height: 75vh;
+          box-sizing: border-box;
+          font-family: Arial, sans-serif;
         }
+
+        .hl-page * { box-sizing: border-box; }
 
         .hl-heading {
           display: flex;
@@ -347,11 +393,12 @@ export default function HarvestLog() {
           margin: 5px 0 0;
           color: #7b8c7e;
           font-size: 12px;
+          line-height: 1.6;
         }
 
         .hl-form {
           display: grid;
-          grid-template-columns: repeat(4, minmax(0, 1fr));
+          grid-template-columns: repeat(3, minmax(0, 1fr));
           gap: 16px;
         }
 
@@ -401,6 +448,7 @@ export default function HarvestLog() {
           border-radius: 7px;
           font-size: 12px;
           font-weight: 700;
+          cursor: pointer;
           transition: background .2s;
         }
 
@@ -440,6 +488,7 @@ export default function HarvestLog() {
           background: #edf7e8;
           color: #28683a;
           font-size: 13px;
+          line-height: 1.5;
         }
 
         .hl-stats {
@@ -519,6 +568,7 @@ export default function HarvestLog() {
           background: white;
           color: #526958;
           font-size: 12px;
+          cursor: pointer;
         }
 
         .hl-tab.active {
@@ -536,7 +586,7 @@ export default function HarvestLog() {
 
         .hl-table {
           width: 100%;
-          min-width: 900px;
+          min-width: 1250px;
           border-collapse: collapse;
           text-align: left;
           font-size: 12px;
@@ -555,6 +605,7 @@ export default function HarvestLog() {
           border-top: 1px solid #e8eee5;
           color: #415748;
           white-space: nowrap;
+          vertical-align: middle;
         }
 
         .hl-table tbody tr:hover { background: #fbfdf9; }
@@ -564,13 +615,34 @@ export default function HarvestLog() {
           font-weight: 700;
         }
 
+        .hl-contact {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+          min-width: 150px;
+        }
+
+        .hl-contact a {
+          color: #267444;
+          text-decoration: none;
+          font-size: 12px;
+        }
+
+        .hl-contact a:hover { text-decoration: underline; }
+
+        .hl-contact small {
+          color: #819083;
+          font-size: 11px;
+        }
+
         .hl-status {
-          max-width: 130px;
+          max-width: 140px;
           padding: 7px 9px;
           border: 1px solid transparent;
           border-radius: 6px;
           font-size: 11px;
           font-weight: 700;
+          cursor: pointer;
         }
 
         .hl-status.packed,
@@ -614,11 +686,14 @@ export default function HarvestLog() {
           place-items: center;
           padding: 20px;
           background: #102b1f9c;
+          overflow-y: auto;
         }
 
         .hl-modal {
           width: 100%;
-          max-width: 390px;
+          max-width: 420px;
+          max-height: 90vh;
+          overflow-y: auto;
           padding: 24px;
           border-radius: 14px;
           background: white;
@@ -632,7 +707,7 @@ export default function HarvestLog() {
           font-size: 22px;
         }
 
-        .hl-modal p {
+        .hl-modal > p {
           color: #637667;
           font-size: 13px;
           line-height: 1.6;
@@ -654,9 +729,13 @@ export default function HarvestLog() {
           background: #f3f8ef;
           color: #385641;
           font-size: 12px;
-          line-height: 1.8;
+          line-height: 1.9;
           text-align: left;
           overflow-wrap: anywhere;
+        }
+
+        .hl-qr-details a {
+          color: #267444;
         }
 
         .hl-modal-actions {
@@ -701,15 +780,19 @@ export default function HarvestLog() {
       <main className="hl-page">
         <header className="hl-heading">
           <div>
-            <p className="hl-eyebrow">AGRiROUTE · COOPERATIVE DASHBOARD</p>
+            <p className="hl-eyebrow">
+              AGRiROUTE · COOPERATIVE DASHBOARD
+            </p>
             <h1>Local Cooperative Harvest Log</h1>
             <p>
-              Record harvest batches and monitor shipment progress.
+              Record harvest batches, farmer contact details,
+              and monitor shipment progress.
             </p>
           </div>
 
           <div className="hl-total-badge">
-            🌱 {records.length} harvest record{records.length === 1 ? "" : "s"}
+            🌱 {records.length} harvest record
+            {records.length === 1 ? "" : "s"}
           </div>
         </header>
 
@@ -743,7 +826,10 @@ export default function HarvestLog() {
           <div className="hl-panel-heading">
             <div>
               <h2>Log New Harvest Batch</h2>
-              <p>Enter the harvest details below.</p>
+              <p>
+                Enter the farmer's contact details and harvest
+                information. The contact number is required.
+              </p>
             </div>
           </div>
 
@@ -756,7 +842,36 @@ export default function HarvestLog() {
                 onChange={handleChange}
                 placeholder="e.g. Jose Mercado"
                 maxLength={100}
+                autoComplete="name"
                 required
+              />
+            </label>
+
+            <label className="hl-field">
+              Contact Number
+              <input
+                name="phone"
+                type="tel"
+                value={form.phone}
+                onChange={handleChange}
+                placeholder="e.g. 09171234567"
+                maxLength={20}
+                autoComplete="tel"
+                aria-label="Farmer contact number"
+                required
+              />
+            </label>
+
+            <label className="hl-field">
+              Email Address (Optional)
+              <input
+                name="email"
+                type="email"
+                value={form.email}
+                onChange={handleChange}
+                placeholder="e.g. farmer@email.com"
+                maxLength={150}
+                autoComplete="email"
               />
             </label>
 
@@ -821,7 +936,8 @@ export default function HarvestLog() {
             <div>
               <h2>Current Harvests & Shipment Status</h2>
               <p>
-                Update each shipment as it moves from packing to delivery.
+                View farmer contact information and update each
+                shipment as it moves from packing to delivery.
               </p>
             </div>
           </div>
@@ -833,7 +949,7 @@ export default function HarvestLog() {
                 type="search"
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
-                placeholder="⌕ Search farmer, crop, buyer..."
+                placeholder="⌕ Search name, phone, email, crop..."
                 aria-label="Search harvest records"
               />
 
@@ -889,11 +1005,12 @@ export default function HarvestLog() {
               <thead>
                 <tr>
                   <th>Farmer Name</th>
+                  <th>Contact Information</th>
                   <th>Crop Type</th>
                   <th>Quantity (kg)</th>
                   <th>Buyer</th>
                   <th>Logged Time</th>
-                  <th>Status</th>
+                  <th>Shipment Status</th>
                   <th>Summary QR</th>
                   <th>Action</th>
                 </tr>
@@ -902,11 +1019,40 @@ export default function HarvestLog() {
               <tbody>
                 {visibleRecords.map((record) => (
                   <tr key={record.id}>
-                    <td className="hl-farmer">{record.farmer}</td>
+                    <td className="hl-farmer">
+                      {record.farmer}
+                    </td>
+
+                    <td>
+                      <div className="hl-contact">
+                        {record.phone ? (
+                          <a href={`tel:${record.phone}`}>
+                            ☎ {record.phone}
+                          </a>
+                        ) : (
+                          <small>No phone provided</small>
+                        )}
+
+                        {record.email ? (
+                          <a href={`mailto:${record.email}`}>
+                            ✉ {record.email}
+                          </a>
+                        ) : (
+                          <small>No email provided</small>
+                        )}
+                      </div>
+                    </td>
+
                     <td>{record.crop}</td>
-                    <td>{Number(record.quantity).toLocaleString()}</td>
+
+                    <td>
+                      {Number(record.quantity).toLocaleString()}
+                    </td>
+
                     <td>{record.buyer}</td>
+
                     <td>{record.loggedAt || "—"}</td>
+
                     <td>
                       <select
                         aria-label={`Status for ${record.farmer}`}
@@ -923,6 +1069,7 @@ export default function HarvestLog() {
                         ))}
                       </select>
                     </td>
+
                     <td>
                       <button
                         className="hl-qr-button"
@@ -932,6 +1079,7 @@ export default function HarvestLog() {
                         ▦ Summary QR
                       </button>
                     </td>
+
                     <td>
                       <button
                         className="hl-danger"
@@ -946,7 +1094,7 @@ export default function HarvestLog() {
 
                 {visibleRecords.length === 0 && (
                   <tr>
-                    <td colSpan="8" className="hl-empty">
+                    <td colSpan="9" className="hl-empty">
                       No harvest records match your search.
                       Try another keyword or change the status filter.
                     </td>
@@ -957,9 +1105,11 @@ export default function HarvestLog() {
           </div>
 
           <p className="hl-footnote">
-            Data is stored in this browser using localStorage. Export a CSV
-            backup regularly. Sample records are for demonstration and can
-            be replaced with your actual harvest entries.
+            Harvest information and contact details are stored in this
+            browser using localStorage. Export a CSV backup regularly.
+            Contact details are visible to people who can access this
+            dashboard, so use real personal information only when
+            authorized.
           </p>
         </section>
       </main>
@@ -980,19 +1130,43 @@ export default function HarvestLog() {
             aria-labelledby="hl-qr-title"
           >
             <h2 id="hl-qr-title">Harvest Summary QR</h2>
+
             <p>
-              Scan this QR code to read the summary for this harvest batch.
+              Scan this QR code to read the summary for this harvest
+              batch, including the farmer's contact information.
             </p>
 
-            <img src={qrUrl} alt="QR code for harvest summary" />
+            <img
+              src={qrUrl}
+              alt="QR code containing the harvest summary and contact details"
+            />
 
             <div className="hl-qr-details">
-              <strong>Farmer:</strong> {qrRecord.farmer}<br />
-              <strong>Crop:</strong> {qrRecord.crop}<br />
+              <strong>Farmer:</strong> {qrRecord.farmer}
+              <br />
+
+              <strong>Contact Number:</strong>{" "}
+              {qrRecord.phone || "Not provided"}
+              <br />
+
+              <strong>Email:</strong>{" "}
+              {qrRecord.email || "Not provided"}
+              <br />
+
+              <strong>Crop:</strong> {qrRecord.crop}
+              <br />
+
               <strong>Quantity:</strong>{" "}
-              {Number(qrRecord.quantity).toLocaleString()} kg<br />
-              <strong>Buyer:</strong> {qrRecord.buyer}<br />
+              {Number(qrRecord.quantity).toLocaleString()} kg
+              <br />
+
+              <strong>Buyer:</strong> {qrRecord.buyer}
+              <br />
+
               <strong>Status:</strong> {qrRecord.status}
+              <br />
+
+              <strong>Logged:</strong> {qrRecord.loggedAt || "—"}
             </div>
 
             <div className="hl-modal-actions">
@@ -1014,7 +1188,9 @@ export default function HarvestLog() {
             </div>
 
             <p className="hl-footnote">
-              QR generation requires an internet connection to the QR service.
+              QR generation requires an internet connection. The QR
+              contains personal contact details, so share it only
+              with authorized recipients.
             </p>
           </section>
         </div>
